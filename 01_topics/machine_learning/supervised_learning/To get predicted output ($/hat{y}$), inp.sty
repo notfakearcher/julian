@@ -1,0 +1,123 @@
+To get predicted output ($\hat{y}$), inputs must first go through "activation."\
+For Binary Logistic Regession, we use a sigmoid activation function $\sigma(z)$:
+
+$ \hat{y} = P(\hat{y}=1|\mathbf{x}) = \sigma(z) = 
+\begin{cases}
+\frac{1}{1 + \exp(-z)}, & \text{if }z \ge 0  \\
+\frac{\exp(z)}{1 + \exp(z)}, & \text{else} 
+\end{cases}
+$
+
+For Generalizable Multinomial Logistic Regession, we use softmax $\sigma(z)$:
+
+$ \hat{y} = P(\hat{y}=k|\mathbf{x}) = \sigma(z) = 
+\frac{\exp(z)}{\sum_{k=1}^{K}\exp(z_k)}
+$
+
+--------
+
+To determine how much predicted values differ from labels, we define a loss \
+function based on entropy or randomness in the dataset. Less entropy is better.\
+$ $\
+For Binary Logistic Regression:
+
+$L(\hat{y}, y) = -\frac{1}{m}\sum_{i=1}^{m} 1\{y_i=1\} \text{ }log(\hat{y}_i) + 1\{y_i=0\}\text{ }log(1 - \hat{y}_i)$
+
+For Generalizable Multinomial Logistic Regression:
+
+$L(\hat{y}, y) = -\frac{1}{K}\sum_{i=1}^{m} \sum_{k=1}^{K} 1\{y_i=k\} \text{ }log(\hat{y}_i)$
+
+$L(\hat{y}, y) = -\frac{1}{N}\sum_{i=1}^{N} 1\{y_i=1\} \text{ }log(\sigma(z_i)) + 1\{y_i=0\}\text{ }log(1 - \sigma(z_i))$
+
+
+$\Large\frac{\partial{(\sigma(z))}}{\partial{z}} = $
+$\Large\frac{\partial{(\frac{1}{1 + \exp(-z)})}}{\partial{z}} = $
+$\Large\frac{0*(1 + \exp(-z)) -1*(exp(-z)*(-1))} {1+exp(-z)} = $\
+$\Large\frac{1} {1+exp(-z)}*\left(1 - \frac{1} {1+exp(-z)}\right) = $\
+
+
+
+![waterfall](https://images.unsplash.com/photo-1593322962878-a4b73deb1e39?ixid=MXwxMjA3fDB8MHx0b3BpYy1mZWVkfDc3NHw2c01WalRMU2tlUXx8ZW58MHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60)
+
+<img src="https://images.unsplash.com/photo-1589652717406-1c69efaf1ff8?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80" style="height:300px" />  
+
+
+
+After prediction we can use gradient descent having learning rate ($\eta$) to\
+try and get the best values for $\mathbf{w}$ and b. Gradient descent is \
+iterative, so at epoch or time $(t=0)$ we first initialize...
+
+$\Large\mathbf{w}^{(t=0)} = \underset{\forall j}{w_j = \mu(0,1) * \sqrt\frac{2}{N}}$\
+$\Large b^{(t=0)} = \underset{\forall i}{b_i = 0}$
+
+Then for Binary Logistic Regression:,
+
+$
+\Large\mathbf{w}^{(t+1)} =
+\mathbf{w} - \eta \frac{\partial{L(\hat{y}, y)}}{\partial{\mathbf{w}}} =
+\mathbf{w} - \eta \left(\frac{1}{N}(\mathbf{\hat{y} - y})\mathbf{x}_{i}^{T}\right)
+\
+$
+
+$
+\Large b^{(t+1)} = 
+b - \eta \frac{\partial{L(\hat{y}, y)}}{\partial{b}} = 
+b - \eta \left(\frac{1}{N}(\mathbf{\hat{y} - y})\right)
+$
+
+---------
+
+After prediction we can use gradient descent having learning rate ($\eta$) to\
+try and get the best values for $\mathbf{w}$ and b. Gradient descent is \
+iterative, so at epoch/time/datapoint $(i=0)$ we first initialize...
+
+$\Large w_j^{(i=0)} = \mu(0,1) * \sqrt\frac{2}{N}$\
+$\Large b^{(i=0)} = 0$
+
+Then for Binary Logistic Regression:
+
+$
+\Large b^{(i+1)} = 
+b^{(i)} + \eta\cdot \frac{1}{N}\sum_{i=1}^{N}\left(\sigma(z^{(i)})- y^{(i)}\right)
+$
+
+$
+\Large w_{j}^{(i+1)} = w_{j}^{(i)} - \eta\cdot\nabla_{\theta_j}\mathcal{J}(\theta_j) =
+w_{j}^{(i)} - \eta\cdot(\sigma(z^{(i)})- y^{(i)})x_{j}^{(i)}
+$
+
+Then for Generalizable Multinomial Logistic Regression:
+
+$
+\Large b_{k}^{(i+1)} = 
+b_{k}^{(i)} - \eta\cdot\left(\sigma(z_{k}^{(i)})- 1\{y^{(i)}=k\}\right)
+$
+
+$
+\Large w_{j,k}^{(i+1)} = w_{j,k}^{(i)} - \eta\cdot\nabla_{\theta_{j,k}}\mathcal{J}(\theta_{j,k}) =
+w_{j,k}^{(i)} - \eta\cdot\left(\sigma(z_{k}^{(i)})- 1\{y^{(i)}=k\}\right)x_{j}^{(i)}
+$
+
+$
+\Large z_{k}^{(i+1)} = 
+\mathbf{x}_{k}^{(i+1)} \cdot \mathbf{w}_{k}^{(i+1)} + b_{k}^{(i+1)}
+$
+
+$
+\Large \sigma{\left(z_{k}^{(i+1)}\right)} = 
+\Large\frac{exp\left(z_{k}^{(i+1)}\right)}{\sum_{a=1}^{K}exp\left(z_{a}^{(i+1)}\right)}
+$
+
+Note: the stopping criteria for the gradient descent is when 
+
+
+
+$
+\Large z_{k}^{(i+1)} = 
+\mathbf{x}_{k}^{(i+1)} \cdot \mathbf{w}_{k}^{(i+1)} + b_{k}^{(i+1)}
+$
+
+$
+\Large \sigma{\left(z_{k}^{(i+1)}\right)} = 
+\Large\frac{exp\left(z_{k}^{(i+1)}\right)}{\sum_{a=1}^{K}exp\left(z_{a}^{(i+1)}\right)}
+$
