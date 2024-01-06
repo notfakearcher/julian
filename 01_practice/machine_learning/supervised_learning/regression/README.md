@@ -1,1 +1,15 @@
-- 
+To Do:
+- regression_linear_01: https://www.geeksforgeeks.org/linear-regression-python-implementation/
+- regression_polynomial_01: https://www.geeksforgeeks.org/python-implementation-of-polynomial-regression/
+- regression_support_vector_01: https://www.geeksforgeeks.org/support-vector-regression-svr-using-linear-and-non-linear-kernels-in-scikit-learn/
+- regression_decision_tree_01: https://www.geeksforgeeks.org/python-decision-tree-regression-using-sklearn/
+- regression_random_forest_01: https://www.geeksforgeeks.org/random-forest-regression-in-python/
+- regression_gradient_boosting_01: https://www.geeksforgeeks.org/ml-gradient-boosting/
+- regression_lasso_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
+- regression_ridge_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
+- regression_elastic_net_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
+- regression_stochastic_gradient_descent_01: https://www.geeksforgeeks.org/stochastic-gradient-descent-regressor/
+- regression_categorical_boosting_01: https://www.geeksforgeeks.org/catboost-ml/
+- regression_kernel_ridge_01: https://www.geeksforgeeks.org/difference-between-ridge-regression-and-svm-regressor-in-scikit-learn/
+- regression_stochastic_gradient_descent_01: https://www.geeksforgeeks.org/stochastic-gradient-descent-regressor/
+- regression_light_gradient_boosting_machine_01: https://www.geeksforgeeks.org/stochastic-gradient-descent-regressor/
