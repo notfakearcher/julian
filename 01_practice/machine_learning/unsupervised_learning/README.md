@@ -1,5 +1,5 @@
 To Do:
-- principal_component_analysis_01:m https://www.geeksforgeeks.org/principal-component-analysis-with-python/
+- principal_component_analysis_01: https://www.geeksforgeeks.org/principal-component-analysis-with-python/
 - linear_discriminant_analysis_01: https://www.geeksforgeeks.org/ml-linear-discriminant-analysis/#
 - clustering_kmeans_01: https://scikit-learn.org/stable/modules/clustering.html#k-means
 - clustering_bisecting_kmeans_01: https://scikit-learn.org/stable/modules/clustering.html#bisect-k-means
