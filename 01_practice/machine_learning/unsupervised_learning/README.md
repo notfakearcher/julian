@@ -1,7 +1,5 @@
 To Do:
-- clustering_kmeans_01: https://scikit-learn.org/stable/modules/clustering.html#k-means
 - clustering_bisecting_kmeans_01: https://scikit-learn.org/stable/modules/clustering.html#bisect-k-means
-- clustering_spectral_01: https://scikit-learn.org/stable/modules/clustering.html#spectral-clustering
 - clustering_hiearchical_01: https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
 - clustering_agglomerative_01: https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
 - clustering_defined_distance_01: https://scikit-learn.org/stable/modules/clustering.html#dbscan
