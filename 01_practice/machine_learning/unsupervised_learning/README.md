@@ -1,6 +1,4 @@
 To Do:
-- clustering_hiearchical_01: https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
-- clustering_agglomerative_01: https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
 - clustering_defined_distance_01: https://scikit-learn.org/stable/modules/clustering.html#dbscan
 - clustering_self_adjusting_01: https://scikit-learn.org/stable/modules/clustering.html#hdbscan
 - clustering_multiscale_01: https://scikit-learn.org/stable/modules/clustering.html#optics
