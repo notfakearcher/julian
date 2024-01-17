@@ -1,7 +1,7 @@
-# %% [markdown]
+# --%% [markdown]
 # # Application: Cluster Master
 
-# %% [markdown]
+# --%% [markdown]
 # Application Description: 
 #   - Takes in a dataset
 #   - Allows users to select specific target columns
@@ -26,10 +26,10 @@
 #   - Github: https://github.com/notfakearcher/julian
 #   - LinkedIn: https://www.linkedin.com/in/archerj
 
-# %% [markdown]
+# --%% [markdown]
 # ## Import Python Libraries
 
-# %%
+# --%%
 import sys
 import streamlit as st
 import time 
@@ -47,10 +47,10 @@ from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette
 from sklearn.metrics import silhouette_score, silhouette_samples
 from sklearn.utils import resample
 
-# %% [markdown]
+# --%% [markdown]
 # ## Global Variables
 
-# %%
+# --%%
 # random state 
 random_state = 4781
 
@@ -65,10 +65,10 @@ c6 = ["#fbfce6", "#a2daf2", "#ffc7c7", '#8e6a9e']
 c7 = [(0, 0, 1), (0, 1 ,0), (1, 0, 0), (1, 1, 0)]
 c8 = ['#fcba03', '#0367fc', '#9003fc', '#fc3503', '#524e4d', '#35dbc0']
 
-# %% [markdown]
+# --%% [markdown]
 # ## Application Header
 
-# %%
+# --%%
 # make streamlit application go into "wide" mode
 # st. set_page_config(layout="wide")
 
@@ -82,10 +82,10 @@ txt = 'This app takes in a dataset, \
   and makes predicions to cluster labels based on newly uploaded data.'
 st.markdown(txt)
 
-# %% [markdown]
+# --%% [markdown]
 # ## Import Dataset
 
-# %%
+# --%%
 # upload file to generate clusters from
 txt = 'Select and upload .csv file for generating clusters'
 filepath1 = st.file_uploader(label = txt, accept_multiple_files = False, 
@@ -138,10 +138,10 @@ le = LabelEncoder()
 categorical_cols = df1[X_cols].select_dtypes("object").columns
 df1[categorical_cols] = df1[categorical_cols].apply(le.fit_transform)
 
-# %% [markdown]
+# --%% [markdown]
 # ## Data Cleaning and Transformation
 
-# %%
+# --%%
 # predictor columns
 X_cols = df1.columns
 
@@ -163,10 +163,10 @@ df2[X_cols] = norm.fit_transform(df2[X_cols])
 #   cond1 = ~((df2[X] >= 2) | (df2[X] <= -2))
 #   df2 = df2.loc[cond1,:]
 
-# %% [markdown]
+# --%% [markdown]
 # ## Visualize Dataset
 
-# %%
+# --%%
 # figure setup
 fig_cols = 3
 fig_rows = np.ceil(len(X_cols)/fig_cols).astype('int')
@@ -206,18 +206,18 @@ st.write(X_col_map)
 with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
   st.pyplot(f1)
 
-# %% [markdown]
+# --%% [markdown]
 # ## Data Cleaning and Transformation
 
-# %% run app
+# --%% run app
 # cd C:\Users\80148956\Desktop\Upskill\Python\Apps\app_cluster_master_01
 # streamlit run app_cluster_master_01.py
 # https://github.com/notfakearcher/julian/blob/main/04_projects/app_cluster_master_01.ipynb
 
-# %% [markdown]
+# --%% [markdown]
 # ## Train ML Model
 
-# %%
+# --%%
 # define X - feature matrix
 X = df2[X_cols]
 
