@@ -389,7 +389,7 @@ with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
 # download final cluster results
 st.download_button(
   label = 'Download Cluster Results',
-  data = df_clusters.to_csv().encode('utf-8'),
+  data = df_clusters.to_csv(index = False).encode('utf-8'),
   file_name = 'cluster_results.csv',
   mime = 'text/csv'
-) 
+)
