@@ -9,10 +9,10 @@
 #   - Make predicions to cluster labels based on newly uploaded data
 # 
 # Inputs:
-#   1. ...
+#   1. File (.csv) with 1st row as header [N * M]
 # 
 # Outputs:
-#   1. ...
+#   1. Cluster Results Table [N * (M + 1)]
 # 
 # ---
 # ---
