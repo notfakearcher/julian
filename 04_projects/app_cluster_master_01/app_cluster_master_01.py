@@ -17,7 +17,7 @@
 # ---
 # ---
 # Version.Release: 
-#   - 01.01
+#   - 01.02
 # 
 # Author: 
 #   - Julian Archer
@@ -42,7 +42,8 @@ import re
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.decomposition import PCA
-from sklearn.cluster import AgglomerativeClustering, BisectingKMeans, KMeans, OPTICS, DBSCAN, HDBSCAN,SpectralClustering
+from sklearn.cluster import AgglomerativeClustering, BisectingKMeans, KMeans, OPTICS, DBSCAN, HDBSCAN, SpectralClustering
+from sklearn.neighbors import NearestNeighbors
 from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette
 from sklearn.metrics import silhouette_score, silhouette_samples
 from sklearn.utils import resample
@@ -73,7 +74,7 @@ c8 = ['#fcba03', '#0367fc', '#9003fc', '#fc3503', '#524e4d', '#35dbc0']
 # st. set_page_config(layout="wide")
 
 # application title
-st.title('Cluster Master - Release 01.01')
+st.title('Cluster Master - Release 01.02')
 
 # application description
 txt = 'This app takes in a dataset, \
@@ -207,14 +208,6 @@ with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
   st.pyplot(f1)
 
 # %% [markdown]
-# ## Data Cleaning and Transformation
-
-# %% run app
-# cd C:\Users\80148956\Desktop\Upskill\Python\Apps\app_cluster_master_01
-# streamlit run app_cluster_master_01.py
-# https://github.com/notfakearcher/julian/blob/main/04_projects/app_cluster_master_01.ipynb
-
-# %% [markdown]
 # ## Train ML Model
 
 # %%
@@ -274,48 +267,154 @@ def jra_plot_dendrogram(X, title, metric, method):
   
   return(p1)
   
-# plot dendrogrm for training and test to evaluate optimal (k) number of clusters
-f2, axes = plt.subplots(nrows = 1, ncols = 3, figsize = (18, 5))
-metric = 'euclidean'
-method = 'ward'
-
-# training data dendrogram
-title = 'Training Data\nDendrogram for Hierarchial Clustering - Divisive'
-plt.subplot(131)
-p1 = jra_plot_dendrogram(X_train, title, metric = metric, method = method)
-
-# testing data dendrogram
-title = 'Testing Data\nDendrogram for Hierarchial Clustering - Divisive'
-plt.subplot(132)
-p2 = jra_plot_dendrogram(X_test, title, metric = metric, method = method)
-
-# all data dendrogram
-title = 'All Data\nDendrogram for Hierarchial Clustering - Divisive'
-plt.subplot(133)
-p3 = jra_plot_dendrogram(X, title, metric = metric, method = method)
-
-# add supblot title 
-f2.suptitle("Dendrogram Plot: Based on Pricipal Components 1 and 2",
-            y = 0.999, 
-            fontsize = 20
-)
-f2.tight_layout()
+# function for fitting clustering_hierarchical
+def jra_clustering_hierarchical(n_clusters):
+  
+  # initialize hierarchical agglomerative clustering
+  clustering_model = AgglomerativeClustering(
+    n_clusters = n_clusters,
+    metric = 'euclidean',
+    linkage = 'ward'
+  )
+  
+  # return clustering model
+  return(clustering_model)
 
 
-# show dendrogram plot
-with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
-  st.pyplot(f2)
+# function for fitting clustering_k_means
+def jra_clustering_k_means(X):
+  # get optimal number of clusters k
+  silhouette_avg = []
+  silhouette_std = []
+  k_values = np.arange(2, 5)
 
-# use agglomerative clusting to generate clusters based on optimal (k) clusters
-# k = 4
-cluster_colors = p3['color_list']
-k = len(np.unique(cluster_colors)) - 1
+  for k in k_values:
+    # initialize clustering model
+    clustering_model = clustering_model = KMeans(
+      n_clusters = k, 
+      n_init = 'auto', 
+      random_state = random_state, 
+      init = 'k-means++'
+    )
+    # fit model and predict labels
+    y_hat = clustering_model.fit_predict(X)
+    # silhoutte score for each sample
+    silhouette_values = silhouette_samples(X, labels = y_hat)
+    # silhoutte avg
+    temp = silhouette_values.mean()
+    silhouette_avg.append(temp)
+    # silhoutte std
+    temp = silhouette_values.std()
+    silhouette_std.append(temp)
+    
+  # ratio of avg to std
+  silhouette_avg_to_std = np.divide(silhouette_avg, silhouette_std)
 
-clustering_model = AgglomerativeClustering(
-  n_clusters = k,
-  metric = metric,
-  linkage = method
-)
+  # get optimal k
+  i = np.where(silhouette_avg_to_std == silhouette_avg_to_std.max())
+  k = k_values[i][0]
+
+  # initialize k-means clustering
+  clustering_model = KMeans(
+    n_clusters = k, 
+    n_init = 'auto', 
+    random_state = random_state, 
+    init = 'k-means++'
+  )
+  # return clustering model
+  return(clustering_model)
+
+
+# function for fitting clustering_k_means
+def jra_clustering_dbscan(X):
+  
+  # determine optimal eps neighborhood value using k-distance
+  nn = NearestNeighbors(n_neighbors = 2)
+  temp = nn.fit(X)
+  distances, indicies = nn.kneighbors(X)
+  distances = np.sort(distances[:,1])
+  change_points = zip(distances[:-1], distances[1:])
+  distance_changes = [np.abs(b-a) for a, b, in change_points]
+  max_change = np.max(distance_changes)
+  cond = np.where(distance_changes == max_change)[0] - 1
+  eps = distances[cond][0].astype('float')
+  eps = eps if eps > 0.0 else 0.01
+  
+  # initialize k-means clustering
+  clustering_model = DBSCAN(
+    eps = eps,
+    metric = 'euclidean'
+  )
+  
+  # return clustering model
+  return(clustering_model)
+
+
+# select which clustering analysis method to apply on dataset
+txt = 'Select clustering method to apply on dataset'
+options = [
+  'DBSCAN',
+  'Hierarchical',
+  'K-Means'
+]
+clustering_method = st.selectbox(label = txt, options = options, index = 1)
+
+
+# get clustering model need to fit and generate labels
+if clustering_method == 'Hierarchical':
+  
+  # plot dendrogrm for training and test to evaluate optimal (k) number of clusters
+  f2, axes = plt.subplots(nrows = 1, ncols = 3, figsize = (18, 5))
+  metric = 'euclidean'
+  method = 'ward'
+
+  # training data dendrogram
+  title = 'Training Data\nDendrogram for Hierarchial Clustering - Divisive'
+  plt.subplot(131)
+  p1 = jra_plot_dendrogram(X_train, title, metric = metric, method = method)
+
+  # testing data dendrogram
+  title = 'Testing Data\nDendrogram for Hierarchial Clustering - Divisive'
+  plt.subplot(132)
+  p2 = jra_plot_dendrogram(X_test, title, metric = metric, method = method)
+
+  # all data dendrogram
+  title = 'All Data\nDendrogram for Hierarchial Clustering - Divisive'
+  plt.subplot(133)
+  p3 = jra_plot_dendrogram(X, title, metric = metric, method = method)
+
+  # add supblot title 
+  f2.suptitle("Dendrogram Plot: Based on Principal Components 1 and 2",
+              y = 0.999, 
+              fontsize = 20
+  )
+  f2.tight_layout()
+
+  # show dendrogram plot
+  with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
+    st.pyplot(f2)
+  
+  # extract color list from dendrogram output object
+  cluster_colors = p3['color_list']
+  # determine optimal k based on threshold cutoff (inherent to color map)
+  k = len(np.unique(cluster_colors)) - 1  
+  # get clustering model
+  clustering_model = jra_clustering_hierarchical(n_clusters = k)
+  
+elif clustering_method == 'K-Means':
+  
+  # get clustering model
+  clustering_model = jra_clustering_k_means(X = X_train)
+
+elif clustering_method == 'DBSCAN':
+  
+  # get clustering model
+  clustering_model = jra_clustering_dbscan(X = X_train)
+  
+else:
+  st.stop()
+
+
 
 # function to plot clusters
 def jra_plot_clusters(X, clustering_model, title):
@@ -334,8 +433,22 @@ def jra_plot_clusters(X, clustering_model, title):
   X1_max = X1_values.max() + 1
   X2_max = X2_values.max() + 1
 
+
+  # number of clusters to plot
+  k = len(np.unique(y_hat))
+    
+  # try:
+  #   k = clustering_model.n_clusters_
+  # except:
+  #   try:
+  #     k = clustering_model.get_params()['n_clusters']
+  #   except:
+  #     try:
+  #       st.stop()
+  #     except: 
+  #       st.stop()
+  
   # plot clusters
-  k = clustering_model.n_clusters_
   sns.scatterplot(x = X1_values, y = X2_values, hue = y_hat, palette = c8[0:k], s = 35)
   plt.title(title)
   plt.xlabel('PC1')
@@ -373,7 +486,12 @@ f3.tight_layout()
 # show cluster plot
 with st.spinner(text = 'Trying to generate graph...Please wait a moment!!!'):
   st.pyplot(f3)
-  
+
+
+# %% [markdown]
+# ## Output Final Results
+
+# %% 
 # get final cluster results table based on original data
 get_i = df2.index.values
 df_clusters = df1.copy()
