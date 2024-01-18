@@ -1,4 +1,4 @@
-# # Application: Cluster Master
+# Application: Cluster Master
 
 
 # Application Description: 
@@ -157,7 +157,7 @@ df2 = df1.copy()
 norm = StandardScaler()
 df2[X_cols] = norm.fit_transform(df2[X_cols])
 
-# # remove outliers from each column
+# remove outliers from each column
 # for X in X_cols:
 #   cond1 = ~((df2[X] >= 2) | (df2[X] <= -2))
 #   df2 = df2.loc[cond1,:]
@@ -351,12 +351,12 @@ title = 'Training Data\nAgglomerative Clusters'
 plt.subplot(131)
 p1 = jra_plot_clusters(X_train, clustering_model, title)
 
-# # testing data clusters
+# testing data clusters
 title = 'Testing Data\nAgglomerative Clusters'
 plt.subplot(132)
 p2 = jra_plot_clusters(X_test, clustering_model, title)
 
-# # all data clusters
+# all data clusters
 title = 'All Data\nAgglomerative Clusters'
 plt.subplot(133)
 p3 = jra_plot_clusters(X, clustering_model, title)
