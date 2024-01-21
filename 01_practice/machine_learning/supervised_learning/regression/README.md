@@ -8,7 +8,7 @@ To Do:
 - regression_lasso_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
 - regression_ridge_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
 - regression_elastic_net_01: https://www.geeksforgeeks.org/implementation-of-lasso-ridge-and-elastic-net/
-- regression_stochastic_gradient_descent_01: https://www.geeksforgeeks.org/stochastic-gradient-descent-regressor/
+- regression_robust_01: https://www.geeksforgeeks.org/robust-regression-for-machine-learning-in-python/
 - regression_categorical_boosting_01: https://www.geeksforgeeks.org/catboost-ml/
 - regression_kernel_ridge_01: https://www.geeksforgeeks.org/difference-between-ridge-regression-and-svm-regressor-in-scikit-learn/
 - regression_stochastic_gradient_descent_01: https://www.geeksforgeeks.org/stochastic-gradient-descent-regressor/
