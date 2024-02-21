@@ -28,7 +28,7 @@ def jra_regression_metrics(y_true, y_pred, p):
     x =  1 - (c / d)
     return(x)
   
-  # mean squared error - goodness of fit; how close predicted matches true values; gives more weight to larger errors [0, Inf] [0, Inf]
+  # mean squared error - goodness of fit; how close predicted matches true values; gives more weight to larger errors [0, Inf]
   def jra_ml_mse(y_true, y_pred):
     a = y_pred - y_true
     x = np.power(a, 2).mean()
