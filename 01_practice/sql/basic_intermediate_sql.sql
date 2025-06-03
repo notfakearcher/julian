@@ -192,5 +192,93 @@ LIMIT 5 OFFSET 5;
 -- -----------------------------------------------------------------------------
 -- SORTING AND NULL ORDERING
 -- -----------------------------------------------------------------------------
--- SELECT COLUMN
--- FROM customers;
+SELECT *
+FROM customers;
+
+-- Basic sorting (NULLs first in ASC)
+SELECT cust_email
+FROM customers
+ORDER BY cust_email ASC;
+
+
+-- Basic sorting (NULLs last in DESC)
+SELECT cust_email
+FROM customers
+ORDER BY cust_email DESC;
+
+-- Reverse sorting (NULLs last in ASC)
+SELECT cust_email
+FROM customers
+ORDER BY cust_email IS NULL, cust_email ASC;
+
+-- Reverse sorting (NULLs first in DESC)
+SELECT cust_email
+FROM customers
+ORDER BY cust_email IS NOT NULL, cust_email DESC;
+
+
+-- -----------------------------------------------------------------------------
+-- BASIC AGGREGATIONS: COUNT, SUM, AVG, MIN, MAX
+-- -----------------------------------------------------------------------------
+
+-- The AVG() function
+
+SELECT prod_name, prod_price
+FROM products;
+
+SELECT AVG(prod_price) AS avg_price
+FROM products;
+
+SELECT vend_id, AVG(prod_price) AS avg_price
+FROM products
+WHERE vend_id = 'DLL01';
+
+SELECT vend_id, prod_price
+FROM products;
+
+-- The COUNT() function
+SELECT *
+FROM customers;
+
+SELECT COUNT(*) AS num_cust
+FROM customers;
+
+SELECT COUNT(DISTINCT cust_name) AS num_cust
+FROM customers;
+
+-- The MAX function
+SELECT prod_name, prod_price
+FROM products;
+
+SELECT MAX(prod_price) as max_price
+FROM products;
+
+-- The MIN function
+SELECT prod_name, prod_price
+FROM products;
+
+SELECT MIN(prod_price) as min_price
+FROM products;
+
+-- The SUM function 
+SELECT SUM(quantity) AS items_ordered
+FROM orderitems
+WHERE order_num = 20005;
+
+SELECT SUM(item_price * quantity) AS total_price
+FROM orderitems
+WHERE order_num = 20005;
+
+-- Aggregates on Distinct Values
+SELECT AVG(DISTINCT prod_price) AS avg_price
+FROM products
+WHERE vend_id = 'DLL01'
+
+-- Combining aggregate functions
+SELECT 
+  COUNT(*) AS num_items,
+  MIN(prod_price) AS price_min,
+  MAX(prod_price) AS price_max,
+  AVG(prod_price) AS price_avg,
+  SUM(prod_price) AS price_total
+FROM products;
