@@ -288,7 +288,92 @@ FROM products;
 -- GROUP BY + HAVING
 -- -----------------------------------------------------------------------------
 
+-- Creating Groups
+SELECT vend_id, COUNT(*) AS num_prods
+FROM products
+GROUP BY vend_id;
+
+-- Filtering Groups
+SELECT cust_id, COUNT(*) AS orders
+FROM orders 
+GROUP by cust_id
+HAVING COUNT(*) >= 2;
+
+SELECT vend_id, COUNT(*) AS num_prods
+FROM products
+WHERE prod_price >= 4
+GROUP BY vend_id
+HAVING COUNT(*) >= 2;
+
+SELECT order_num, COUNT(*) AS items
+FROM orderitems
+GROUP BY order_num
+HAVING COUNT(*) >= 3;
+
+SELECT order_num, COUNT(*) AS items
+FROM orderitems
+GROUP BY order_num
+HAVING COUNT(*) >= 3
+ORDER BY items, order_num;
+
 
 -- -----------------------------------------------------------------------------
 -- CASE WHEN STATEMENTS
 -- -----------------------------------------------------------------------------
+
+-- Simple CASE Expression
+SELECT *
+FROM vendors;
+
+SELECT  *,
+        CASE vend_state
+          WHEN 'CA' THEN 'California'
+          WHEN 'MI' THEN 'Michigan'
+          WHEN 'NY' THEN 'New York'
+          WHEN 'OH' THEN 'Ohio'
+          ELSE 'Unknown'
+        END AS vend_state_full
+FROM vendors
+ORDER BY vend_state_full;
+
+-- Searched CASE Expression
+
+SELECT * 
+FROM orderitems;
+
+SELECT  *,
+        CASE 
+          WHEN quantity >= 50 THEN 'large'
+          WHEN quantity >= 20 THEN 'medium'
+          WHEN quantity >= 10 THEN 'small'
+          ELSE 'very small'
+        END AS order_size_desc
+FROM orderitems;
+
+SELECT  *,
+        CASE 
+          WHEN quantity >= 50 THEN 'large'
+          WHEN quantity BETWEEN 20 AND 50 THEN 'medium'
+          WHEN quantity >= 10 THEN 'small'
+          ELSE 'very small'
+        END AS order_size_desc
+FROM orderitems;
+
+-- CASE in ORDER BY
+SELECT  *
+FROM vendors
+ORDER BY CASE vend_state
+          WHEN 'MI' THEN 1
+          WHEN 'CA' THEN 2
+          WHEN 'NY' THEN 3
+          WHEN 'OH' THEN 4
+          ELSE 0
+        END;
+
+-- CASE with Aggregate Functions
+SELECT *
+FROM orders;
+
+SELECT  COUNT(*) AS total_orders,
+        COUNT(CASE WHEN order_date BETWEEN '2020-01-01' AND '2020-01-31' THEN 1 END) AS 'jan_orders'
+FROM orders;
